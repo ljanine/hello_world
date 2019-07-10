@@ -1,0 +1,19 @@
+abc
+-> (?)
+--> No escribir nada
+--> Reiniciar la comunicacion
+
+"Hola"|"bot"
+"Cusos"|"user"
+"interesante"|"bot"
+"Dominar javascript"|"user"
+"htttp://www"|"bot"
+
+"xyz"|"user"
+"Disculpa, no entendí ¿quieres volver a empezar?"|"bot"      Si,no
+"si"|"user"
+...
+
+Como se reinicia la conversacion?
+- Eliminar (limpiar) el historial
+- 
