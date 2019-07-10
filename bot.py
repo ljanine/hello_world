@@ -37,6 +37,7 @@ class Bot(object):
         bot_asked_about_restart = False
 
         for text, author in history:
+            bot_reply = True
             logging.info("text: %s", text)
             logging.info("author: %s", author)
 
@@ -55,13 +56,17 @@ class Bot(object):
                     possible_answers = tree['answers'].keys()
                     possible_answers.sort()
                 else:
-                    if bot_asked_about_restart and text == u'Sí':
-                        tree = self.tree
-                        response_text = tree['say']
-                        possible_answers = tree['answers'].keys()
-                        possible_answers.sort()
-                        self.users_dao.remove_user_events(user_id)
-                        break
+                    if bot_asked_about_restart: 
+                        if text == u'Sí':
+                            tree = self.tree
+                            response_text = tree['say']
+                            possible_answers = tree['answers'].keys()
+                            possible_answers.sort()
+                            self.users_dao.remove_user_events(user_id)
+                            break
+                        elif text == u"No":
+                            bot_reply = False
+                            continue
 
                     key = get_key_if_valid(text, tree)
                     if key is None:
@@ -77,9 +82,9 @@ class Bot(object):
                             possible_answers.sort()
                         else:
                             possible_answers = None
-
-        self.send_callback(user_id, response_text, possible_answers)
-        self.users_dao.add_user_event(user_id,'bot',response_text)
+        if bot_reply:
+            self.send_callback(user_id, response_text, possible_answers)
+            self.users_dao.add_user_event(user_id,'bot',response_text)
 
 
 def get_key_if_valid(text, dictionary):
